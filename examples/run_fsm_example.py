@@ -10,7 +10,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = REPO_ROOT / "examples" / "data"
 
 sys.path.insert(0, str(REPO_ROOT))
-from py_fill_spill_merge import fill_spill_merge  # noqa: E402
+from fillspillmerge import fill_spill_merge  # noqa: E402
 
 
 def main() -> int:

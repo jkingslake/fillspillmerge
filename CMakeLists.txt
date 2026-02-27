@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(py_fill_spill_merge LANGUAGES C CXX)
+project(fillspillmerge LANGUAGES C CXX)
 
 set(RICHDEM_NO_PROGRESS ON CACHE BOOL "Whether or not to show RichDEM progress bars")
 

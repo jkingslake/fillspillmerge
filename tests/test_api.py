@@ -9,7 +9,7 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 
-from py_fill_spill_merge import fill_spill_merge
+from fillspillmerge import fill_spill_merge
 
 
 # Stabilize native threading behavior in notebook-like environments.
