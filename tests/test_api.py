@@ -85,3 +85,43 @@ def test_wtd_shape_must_match_hierarchy() -> None:
     bad_wtd = np.zeros((3, 3), dtype=np.float64)
     with pytest.raises(ValueError, match="wtd shape must match"):
         fill_spill_merge(wtd=bad_wtd, hierarchy=hierarchy)
+
+
+def test_xarray_topography_returns_xarray() -> None:
+    xr = pytest.importorskip("xarray")
+
+    topo_np = _demo_topography()
+    topo_da = xr.DataArray(
+        topo_np,
+        dims=("y", "x"),
+        coords={"y": np.arange(topo_np.shape[0]), "x": np.arange(topo_np.shape[1])},
+        name="topography",
+        attrs={"source": "unit-test"},
+    )
+
+    out_da, hierarchy = fill_spill_merge(
+        topography=topo_da,
+        ocean_level=10.0,
+        return_hierarchy=True,
+    )
+
+    assert isinstance(out_da, xr.DataArray)
+    assert out_da.dims == topo_da.dims
+    assert np.array_equal(out_da.coords["x"], topo_da.coords["x"])
+    assert np.array_equal(out_da.coords["y"], topo_da.coords["y"])
+    assert np.isclose(out_da.values.sum(), 0.0)
+    assert out_da.attrs["fillspillmerge_used_cached_hierarchy"] is False
+
+    wtd_da = xr.DataArray(
+        np.zeros_like(topo_np),
+        dims=("y", "x"),
+        coords=topo_da.coords,
+        name="melt",
+    )
+    wtd_da.values[2, 2] = 2.0
+    out_da_2 = fill_spill_merge(wtd=wtd_da, hierarchy=hierarchy)
+
+    assert isinstance(out_da_2, xr.DataArray)
+    assert out_da_2.dims == wtd_da.dims
+    assert np.isclose(out_da_2.values.sum(), wtd_da.values.sum())
+    assert out_da_2.attrs["fillspillmerge_used_cached_hierarchy"] is True

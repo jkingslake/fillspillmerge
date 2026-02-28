@@ -27,6 +27,14 @@ def _ensure_module_loaded(build_dir: Optional[Path] = None):
     return importlib.import_module("_fsm")
 
 
+def _maybe_import_xarray():
+    try:
+        import xarray as xr
+    except ModuleNotFoundError:
+        return None
+    return xr
+
+
 def _build_hierarchy(
     topography: np.ndarray,
     ocean_level: float,
@@ -50,6 +58,20 @@ def fill_spill_merge(
     build_dir: Optional[Path] = None,
     return_hierarchy: bool = False,
 ):
+    xr = _maybe_import_xarray()
+    template_da = None
+
+    # Accept xarray input without requiring a separate helper function.
+    if xr is not None:
+        if topography is not None and isinstance(topography, xr.DataArray):
+            template_da = topography
+            topography = topography.values
+        if wtd is not None and isinstance(wtd, xr.DataArray):
+            template_da = wtd
+            wtd = wtd.values
+
+    hierarchy_was_supplied = hierarchy is not None
+
     if hierarchy is None:
         if topography is None:
             raise ValueError("topography is required when hierarchy is None")
@@ -74,6 +96,24 @@ def fill_spill_merge(
         raise ValueError("wtd shape must match hierarchy shape")
 
     out = hierarchy.run(wtd_arr, nodata)
+
+    if template_da is not None and xr is not None:
+        out_da = xr.DataArray(
+            out,
+            coords=template_da.coords,
+            dims=template_da.dims,
+            name=(template_da.name or "water_depth"),
+            attrs=dict(template_da.attrs),
+        )
+        out_da.attrs["fillspillmerge_ocean_level"] = ocean_level if ocean_level is not None else float(hierarchy.ocean_level)
+        out_da.attrs["fillspillmerge_used_cached_hierarchy"] = hierarchy_was_supplied
+        out_da.attrs["long_name"] = "water depth"
+        out_da.attrs["units"] = "m"
+
+        if nodata is not None:
+            out_da.attrs["fillspillmerge_nodata"] = nodata
+        out = out_da
+
     if return_hierarchy:
         return out, hierarchy
     return out

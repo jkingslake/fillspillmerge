@@ -9,9 +9,15 @@ dependencies = [
     "pybind11>=3.0.2",
 ]
 
+[project.optional-dependencies]
+xarray = [
+    "xarray>=2024.1.0",
+]
+
 [dependency-groups]
 ci = [
     "pytest>=9.0.2",
+    "xarray>=2024.1.0",
 ]
 dev = [
     "dask>=2026.1.2",
@@ -19,5 +25,6 @@ dev = [
     "matplotlib>=3.10.8",
     "pytest>=9.0.2",
     "rioxarray>=0.21.0",
+    "xarray>=2024.1.0",
     "xarray-sweep>=0.1.6",
 ]

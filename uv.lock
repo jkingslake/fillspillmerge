@@ -277,9 +277,15 @@ dependencies = [
     { name = "pybind11" },
 ]
 
+[package.optional-dependencies]
+xarray = [
+    { name = "xarray" },
+]
+
 [package.dev-dependencies]
 ci = [
     { name = "pytest" },
+    { name = "xarray" },
 ]
 dev = [
     { name = "dask" },
@@ -287,6 +293,7 @@ dev = [
     { name = "matplotlib" },
     { name = "pytest" },
     { name = "rioxarray" },
+    { name = "xarray" },
     { name = "xarray-sweep" },
 ]
 
@@ -294,16 +301,22 @@ dev = [
 requires-dist = [
     { name = "numpy", specifier = ">=2.4.2" },
     { name = "pybind11", specifier = ">=3.0.2" },
+    { name = "xarray", marker = "extra == 'xarray'", specifier = ">=2024.1.0" },
 ]
+provides-extras = ["xarray"]
 
 [package.metadata.requires-dev]
-ci = [{ name = "pytest", specifier = ">=9.0.2" }]
+ci = [
+    { name = "pytest", specifier = ">=9.0.2" },
+    { name = "xarray", specifier = ">=2024.1.0" },
+]
 dev = [
     { name = "dask", specifier = ">=2026.1.2" },
     { name = "ipykernel", specifier = ">=7.2.0" },
     { name = "matplotlib", specifier = ">=3.10.8" },
     { name = "pytest", specifier = ">=9.0.2" },
     { name = "rioxarray", specifier = ">=0.21.0" },
+    { name = "xarray", specifier = ">=2024.1.0" },
     { name = "xarray-sweep", specifier = ">=0.1.6" },
 ]
 

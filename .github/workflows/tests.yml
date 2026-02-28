@@ -36,4 +36,4 @@ jobs:
           cmake --build build -j --target _fsm
 
       - name: Run tests
-        run: uv run --group ci pytest -q tests
+        run: uv run --group ci python -m pytest -q tests

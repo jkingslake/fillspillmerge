@@ -1,6 +1,6 @@
 # fillspillmerge
 
-Python wrapper around the Fill-Spill-Merge algorithm., specfically Kerry Callaghan's fork which includes the capability to save and reuse the depression heirachy (https://github.com/KCallaghan/Barnes2020-FillSpillMerge)
+Python wrapper around the Fill-Spill-Merge algorithm, specifically Kerry Callaghan's fork which includes the capability to save and reuse the depression hierarchy ([repo](https://github.com/KCallaghan/Barnes2020-FillSpillMerge)).
 
 This repo keeps `Barnes2020-FillSpillMerge` as a submodule, and keeps the
 Python wrapper implementation in this repo (not inside the submodule).
@@ -17,6 +17,12 @@ Python wrapper implementation in this repo (not inside the submodule).
 ```bash
 cd /Users/jkingslake/Documents/science/meltwater_routing/fsm_pywrapper/fillspillmerge
 uv sync
+```
+
+Optional xarray support:
+
+```bash
+uv sync --extra xarray
 ```
 
 ## Build extension
@@ -45,6 +51,8 @@ wtd_out2 = fill_spill_merge(wtd=wtd2, hierarchy=dh, nodata=np.nan)
 ```
 
 If `wtd` is omitted, it defaults to a zero raster of the hierarchy shape.
+
+If you pass an `xarray.DataArray` as `topography` or `wtd` (and `xarray` is installed), `fill_spill_merge` returns an `xarray.DataArray` with matching dims/coords.
 
 ## Example run
 
