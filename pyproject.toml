@@ -1,3 +1,10 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["fillspillmerge"]
+
 [project]
 name = "fillspillmerge"
 version = "0.1.0"
@@ -5,8 +12,13 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "hvplot>=0.12.2",
+    "jupyter-bokeh>=4.1.0",
     "numpy>=2.4.2",
+    "pdemtools>=1.2.3",
     "pybind11>=3.0.2",
+    "pystac-client>=0.9.0",
+    "sliderule>=5.5.0",
 ]
 
 [project.optional-dependencies]

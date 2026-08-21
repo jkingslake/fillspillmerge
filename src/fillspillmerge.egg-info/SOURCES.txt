@@ -1,0 +1,9 @@
+LICENSE
+README.md
+pyproject.toml
+src/fillspillmerge.egg-info/PKG-INFO
+src/fillspillmerge.egg-info/SOURCES.txt
+src/fillspillmerge.egg-info/dependency_links.txt
+src/fillspillmerge.egg-info/requires.txt
+src/fillspillmerge.egg-info/top_level.txt
+tests/test_api.py
